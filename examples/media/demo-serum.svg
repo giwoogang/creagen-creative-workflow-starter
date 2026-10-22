@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#edf2fa"/>
+  <circle cx="400" cy="385" r="255" fill="#e0e8f8"/>
+  <ellipse cx="400" cy="680" rx="151" ry="19" fill="#cbd6e9"/>
+  <rect x="300" y="303" width="200" height="352" rx="31" fill="#d8a15e" stroke="#182641" stroke-width="4"/>
+  <path d="M330 319v300" stroke="#f8d4a3" stroke-width="14" stroke-linecap="round"/>
+  <rect x="292" y="257" width="216" height="73" rx="10" fill="white" stroke="#182641" stroke-width="4"/>
+  <path d="M356 258V184c0-60 88-60 88 0v74" fill="white" stroke="#182641" stroke-width="4"/>
+  <rect x="299" y="403" width="202" height="175" fill="#3659db"/>
+  <g text-anchor="middle" font-family="sans-serif" fill="white">
+    <text x="400" y="445" font-size="25" font-weight="700">DEMO</text>
+    <text x="400" y="481" font-size="17">DAILY SERUM</text>
+    <path d="M365 503h70" stroke="#94adff" stroke-width="2"/>
+    <text x="400" y="545" font-size="18">30 mL</text>
+  </g>
+  <text x="400" y="744" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#536784">Practice product illustration</text>
+</svg>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>Creative Lab | 내 브랜드로 만드는 광고</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="app-header">
+    <a class="wordmark" href="/" aria-label="Creative Lab 홈"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>Creative Lab</a>
+    <span class="environment"><span class="status-dot"></span>로컬 실습 <span class="environment-divider" aria-hidden="true"></span> AI는 별도 도구에서 실행</span>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="page-heading"><div><p class="intro-label">나의 크리에이티브 작업실</p><h1>내 브랜드로 만드는 광고</h1><p class="intro-copy">참고 광고를 고르고, 우리 브랜드의 이미지나 영상 제작 요청을 준비하세요.</p></div><a href="/guide" class="guide-link" target="_blank" rel="noopener">실습 안내서 보기</a></div>
+    <div class="navigation-row">
+      <nav class="tabs" aria-label="실습 단계">
+        <button id="tab-assets" class="tab active" type="button" aria-current="step" data-view="assets"><span class="step-number">1</span>자료 준비</button>
+        <button id="tab-reference" class="tab" type="button" data-view="reference"><span class="step-number">2</span>참고 광고</button>
+        <button id="tab-request" class="tab" type="button" data-view="request"><span class="step-number">3</span>만들 내용</button>
+        <button id="tab-ai" class="tab" type="button" data-view="ai"><span class="step-number">4</span>AI 작업</button>
+        <button id="tab-results" class="tab" type="button" data-view="results"><span class="step-number">5</span>결과와 재실험</button>
+      </nav>
+      <button id="tab-history" class="history-toggle" type="button" data-view="history">작업 기록 <span id="request-count" class="count">0</span></button>
+    </div>
+    <div id="connection-error" class="error-banner" role="alert" hidden><span id="connection-message"></span><button id="retry-load" type="button" class="text-button">다시 불러오기</button></div>
+    <div id="loading" class="loading" role="status">작업실을 불러오는 중입니다.</div>
+    <div id="workspace" hidden>
+      <section id="step-guide" class="step-guide" aria-labelledby="step-title"><div><p id="step-label" class="intro-label"></p><h2 id="step-title" tabindex="-1"></h2><p id="step-purpose"></p><p id="step-next" class="step-next"></p></div><ul id="step-checks" class="step-checks" aria-label="현재 단계 완료 기준"></ul></section>
+      <section id="view-assets" aria-labelledby="tab-assets">
+        <div class="start-options"><div><h2>처음이라면 샘플로 연습해도 좋아요</h2><p>샘플은 가상 브랜드와 직접 그린 제품 그림입니다. 실제 제품 사진은 아닙니다.</p><p id="sample-note" class="muted"></p></div><div class="start-actions"><button id="use-sample" type="button" class="secondary">샘플로 시작</button><button id="use-own" type="button" class="text-button">내 자료로 시작</button></div></div>
+        <div class="workspace-grid">
+          <section class="library panel" aria-labelledby="library-title">
+            <div class="panel-heading"><div><h2 id="library-title">사용할 사진</h2><p>제작에 쓰는 사진을 에셋이라고 부릅니다. 등록하면 자동으로 선택됩니다.</p></div><span id="library-total" class="subtle-label">0개 등록됨</span></div>
+            <div class="role-options" role="group" aria-label="등록할 사진 종류">
+              <button class="role-option active" data-role="product" type="button" aria-pressed="true"><span class="role-icon product-icon" aria-hidden="true"></span><span><strong>제품 <small class="inline-hint">필수</small></strong><small>제품 원본과 패키지</small></span><b id="count-product">0</b></button>
+              <button class="role-option" data-role="person" type="button" aria-pressed="false"><span class="role-icon person-icon" aria-hidden="true"></span><span><strong>인물 <small class="inline-hint">선택</small></strong><small>모델과 출연 인물</small></span><b id="count-person">0</b></button>
+              <button class="role-option" data-role="reference" type="button" aria-pressed="false"><span class="role-icon reference-icon" aria-hidden="true"></span><span><strong>참고 자료 <small class="inline-hint">선택</small></strong><small>구도와 분위기</small></span><b id="count-reference">0</b></button>
+            </div>
+            <div id="dropzone" class="dropzone">
+              <span class="upload-symbol" aria-hidden="true">↑</span><h3 id="upload-heading">제품 이미지를 등록하세요</h3><p>파일을 여기로 끌어 놓거나 직접 선택하세요.</p>
+              <label class="file-button" for="asset-files">이미지 선택<input id="asset-files" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple></label>
+              <span class="file-hint">PNG, JPG, WebP, GIF / 파일당 최대 15MB</span>
+            </div>
+            <p id="upload-status" class="upload-status" role="status" hidden></p>
+            <div class="library-list-heading"><h3 id="asset-list-title">등록한 제품</h3><span id="visible-count" class="subtle-label">0개</span></div>
+            <div id="asset-grid" class="asset-grid"></div><p id="assets-empty" class="empty-caption">제품을 잘 알아볼 수 있는 정면 이미지부터 넣어 보세요.</p>
+          </section>
+          <aside class="brand-panel panel" aria-labelledby="brand-title">
+            <div class="panel-heading"><div><h2 id="brand-title">브랜드 기준</h2><p>브랜드명과 제품명부터 입력하세요.</p></div><span id="brand-status" class="save-status">입력 전</span></div>
+            <form id="brand-form">
+              <label class="field">브랜드명 <span class="required">필수</span><input id="brandName" name="brandName" maxlength="200" placeholder="브랜드 이름" required autocomplete="organization"></label>
+              <label class="field">제품명 <span class="required">필수</span><input id="productName" name="productName" maxlength="200" placeholder="제작할 제품 이름" required></label>
+              <label class="field">제품 설명<textarea id="description" name="description" maxlength="5000" rows="3" placeholder="제품의 특징과 확인된 사실을 적어 주세요."></textarea></label>
+              <label class="field">표현할 분위기<input id="tone" name="tone" maxlength="2000" placeholder="예: 깨끗하고 편안한 일상"></label>
+              <label class="field">피할 표현<textarea id="avoid" name="avoid" maxlength="3000" rows="2" placeholder="사용하지 않을 문구나 연출"></textarea></label>
+              <button id="save-brand" type="submit" class="secondary full-width">브랜드 저장</button>
+            </form>
+          </aside>
+        </div>
+        <div class="selection-bar"><div><span class="selection-indicator" aria-hidden="true">✓</span><p><strong id="selected-count">선택한 사진 0개</strong><span id="selection-caption">제작에 쓸 제품 이미지를 선택하세요.</span></p></div><button id="go-request" class="primary" type="button">참고 광고 살펴보기</button></div><p id="assets-error" class="field-error" role="alert" hidden></p>
+      </section>
+      <section id="view-reference" aria-labelledby="tab-reference" hidden>
+        <div class="reference-workspace">
+          <section class="panel reference-search-panel" aria-labelledby="reference-search-title">
+            <div class="panel-heading"><div><h2 id="reference-search-title">참고할 광고를 찾아봐요</h2><p>원하는 장면을 말로 적으면 AI에 전달할 검색 요청을 준비합니다.</p></div></div>
+            <div class="search-examples" role="group" aria-label="광고 검색 예시"><p>예시로 시작하기</p><button type="button" data-search-example="brand" aria-pressed="false">마미케어 광고</button><button type="button" data-search-example="trending" aria-pressed="false">틱톡에서 지금 핫한 광고</button><button type="button" data-search-example="ugc" aria-pressed="false">틱톡 UGC</button></div>
+            <form id="ad-search-form">
+              <label class="field">어떤 광고를 참고하고 싶나요?<textarea id="ad-search-query" rows="4" maxlength="1500" required placeholder="예: 마미케어 광고, 틱톡에서 지금 핫한 광고, 틱톡 UGC"></textarea></label>
+              <label class="field search-media-field">광고 유형<select id="ad-media-type"><option value="IMAGE">이미지 광고</option><option value="VIDEO">영상 광고</option><option value="ALL">모두</option></select></label>
+              <label class="field search-platform-field">플랫폼<select id="ad-platform"><option value="ALL">전체 플랫폼</option><option value="TIKTOK">TikTok</option><option value="META">Meta</option></select></label>
+              <p id="ad-intent-hint" class="muted search-intent-hint">원하는 브랜드나 장면을 자유롭게 적어 주세요.</p>
+              <p id="ad-search-error" class="field-error" role="alert" hidden></p>
+              <button id="create-ad-search" type="submit" class="primary full-width">검색 요청 만들기</button>
+            </form>
+            <div class="integration-note"><span class="note-icon" aria-hidden="true">i</span><p>실제 검색은 Adcatch에 연결된 Codex 또는 Claude Code에서 실행합니다. 이 앱은 요청을 저장하고 전달받은 후보를 보여 줍니다.</p></div>
+            <div class="manual-reference-note"><h3>직접 구한 참고 사진도 사용할 수 있어요</h3><p>1단계의 참고 자료에 이미지를 등록하고 선택하세요.</p><button type="button" class="text-button" data-view="assets">참고 사진 등록하러 가기</button></div>
+          </section>
+          <section class="reference-results-panel" aria-label="검색 요청과 광고 후보">
+            <div class="search-history-control"><label for="ad-search-history">이전 검색 요청</label><select id="ad-search-history"><option value="">저장한 검색 요청이 없습니다</option></select></div>
+            <p id="ad-results-error" class="field-error" role="alert" hidden></p>
+            <div id="ad-search-detail"></div>
+          </section>
+        </div>
+        <div class="selection-bar reference-selection-bar"><div><span class="selection-indicator" aria-hidden="true">✓</span><p><strong id="reference-selected-count">이번 제작에 선택한 검색 광고 0개</strong><span>후보는 최대 3개까지 고를 수 있어요. 참고 광고 없이도 제작할 수 있습니다.</span></p></div><button id="skip-references" type="button" class="secondary">참고 광고 없이 계속</button></div>
+        <p class="reference-skip-note">참고 광고 없이 계속하면 검색으로 고른 광고는 해제됩니다. 직접 등록한 참고 사진은 유지됩니다.</p>
+      </section>
+      <section id="view-request" aria-labelledby="tab-request" hidden>
+        <div class="request-grid">
+          <section class="panel request-form-panel"><div class="panel-heading"><div><h2>어떤 광고를 준비할까요?</h2><p>방향을 누르면 예시 요청이 입력됩니다. 원하는 대로 고쳐 쓰세요.</p></div></div>
+            <form id="request-form">
+              <fieldset class="kind-fieldset"><legend>제작 유형</legend><div class="kind-options"><label><input type="radio" name="kind" value="image" checked><span><strong>이미지 한 장</strong><small>제품과 장면을 담은 광고</small></span></label><label><input type="radio" name="kind" value="video"><span><strong>영상 제작 요청</strong><small>제작 패키지만 준비</small></span></label></div></fieldset>
+              <p id="video-reference-note" class="muted" hidden>영상 광고를 참고해 영상 제작 요청을 선택했습니다. 이미지로 바꿔도 됩니다.</p>
+              <section id="video-options" class="video-options" aria-labelledby="video-options-title" hidden><h3 id="video-options-title">영상의 길이와 형식을 정해요</h3><div class="video-options-grid"><label class="field">영상 길이<select id="video-duration"><option value="15">15초</option><option value="20" selected>20초</option><option value="30">30초</option></select></label><label class="field">화면 비율<select id="video-ratio"><option value="9:16">9:16 세로</option><option value="1:1">1:1 정사각형</option><option value="16:9">16:9 가로</option></select></label><label class="field">영상 스타일<select id="video-style"><option value="ugc">UGC 사용 장면</option><option value="product">제품 중심</option><option value="custom">직접 지정</option></select></label></div><p class="muted">UGC는 사람이 제품을 사용하는 장면을 중심으로 구성합니다. 실제 고객 경험이나 효능을 지어내지 않습니다.</p><p class="video-preparation-note">지금은 대본, 컷별 장면과 프롬프트를 준비합니다. 영상 생성 도구는 연결하거나 호출하지 않습니다. 실제 생성은 나중에 별도로 테스트하세요.</p></section>
+              <div class="preset-options" role="group" aria-label="광고 시작 방향">
+                <button type="button" class="preset-option" data-preset="product" aria-pressed="false"><strong>제품 중심</strong><small>제품을 중심으로 구성하기</small></button>
+                <button type="button" class="preset-option" data-preset="reference" aria-pressed="false"><strong>참고 구도 활용</strong><small>참고 자료 선택 필요</small></button>
+                <button type="button" class="preset-option" data-preset="person" aria-pressed="false"><strong>인물과 제품</strong><small>인물 사진 선택 필요</small></button>
+              </div>
+              <p id="preset-help" class="muted">직접 입력해도 됩니다. 방향 버튼은 누를 때만 요청을 채웁니다.</p>
+              <label class="field brief-field">만들 내용 <span class="required">필수</span><textarea id="brief" rows="7" maxlength="10000" required placeholder="예: 제품을 가운데 크게 놓고 밝은 배경의 광고 이미지 한 장을 만들어 주세요. 제품의 모양과 로고는 유지해 주세요."></textarea></label>
+
+              <p id="parent-note" class="experiment-note" hidden></p><p id="request-error" class="field-error" role="alert" hidden></p>
+              <button id="prepare-request" class="primary full-width" type="submit">요청 저장하고 AI 작업으로</button>
+            </form>
+          </section>
+          <aside class="preview-panel panel"><div class="panel-heading"><div><h2>보내기 전에 확인하세요</h2><p>선택한 사진과 입력한 기준을 다시 살펴보세요.</p></div><span class="preview-tag">입력 내용 확인</span></div>
+            <div class="request-assets-heading"><h3>이번에 사용할 사진</h3><button class="text-button" type="button" data-view="assets">선택 바꾸기</button></div><div id="request-assets" class="selected-assets"></div><p id="request-assets-empty" class="muted">1단계에서 제품 이미지를 하나 이상 선택하세요.</p>
+            <div class="request-references-heading"><h3>선택한 참고 광고</h3><button class="text-button" type="button" data-view="reference">광고 선택 바꾸기</button></div><div id="request-references"></div>
+            <div class="review-rules"><h3>제품 모양 유지</h3><p>선택한 제품의 모양, 색과 로고를 유지하도록 요청합니다. 만들어진 결과에서도 직접 확인하세요.</p><h3>무엇을 참고하나요?</h3><p id="reference-review"></p></div>
+            <details class="detail-section"><summary>입력한 요청 전체 보기</summary><pre id="prompt-preview" class="prompt-preview"></pre></details>
+            <div class="integration-note"><span class="note-icon" aria-hidden="true">i</span><p>다음 버튼은 요청을 저장합니다. 영상 요청은 4단계에서 제작 패키지만 준비하고, 실제 생성은 나중에 별도로 테스트합니다.</p></div>
+          </aside>
+        </div>
+      </section>
+      <section id="view-ai" aria-labelledby="tab-ai" hidden><div id="ai-content"></div></section>
+      <section id="view-results" aria-labelledby="tab-results" hidden><div id="results-content"></div></section>
+      <section id="view-history" aria-labelledby="tab-history" hidden>
+        <div class="history-heading"><div><h2>작업 기록</h2><p class="muted">저장한 요청과 직접 등록한 결과를 다시 확인하세요.</p></div><button id="history-back" class="secondary" type="button">실습으로 돌아가기</button></div>
+        <div id="history-empty" class="history-empty panel"><h2>저장한 요청이 아직 없습니다</h2><p>자료와 만들 내용을 준비한 뒤 요청을 저장하세요.</p><button class="secondary" type="button" data-view="request">만들 내용 정하기</button></div>
+        <div id="history-content" class="history-grid" hidden><section class="panel history-list-panel"><div id="history-list" class="history-list"></div></section><article id="history-detail" class="panel history-detail"></article></div>
+      </section>
+    </div>
+    <footer class="app-footer"><span>Creative Lab</span><span id="draft-status">입력은 이 브라우저에 자동 보관됩니다.</span></footer>
+  </main><div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+data_kind,variant_id,hook_type,period_start,period_end,currency,objective,audience,placement,attribution_window,impressions,clicks,purchases,spend,revenue
+synthetic,variant-a,question,2026-10-01,2026-10-07,KRW,purchase,sample-audience,sample-feed,sample-7d-click,40000,600,12,120000,360000
+synthetic,variant-b,situation,2026-10-01,2026-10-07,KRW,purchase,sample-audience,sample-feed,sample-7d-click,40000,960,12,120000,360000
+synthetic,variant-c,visual,2026-10-01,2026-10-07,KRW,purchase,sample-audience,sample-feed,sample-7d-click,500,20,1,1500,30000

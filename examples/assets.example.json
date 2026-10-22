@@ -1,0 +1,8 @@
+{
+  "data_kind": "template",
+  "assets": [
+    {"asset_id": "product-front", "role": "product", "local_path": null, "status": "missing", "use_permission": "not_checked"},
+    {"asset_id": "person-front", "role": "person", "local_path": null, "status": "missing", "use_permission": "not_checked"}
+  ],
+  "note": "실제 이미지가 포함되지 않은 목록 템플릿입니다. work/assets/에 파일을 준비한 뒤 경로와 사용 범위를 기록합니다."
+}

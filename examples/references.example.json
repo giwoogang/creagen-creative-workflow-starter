@@ -1,0 +1,30 @@
+{
+  "data_kind": "fictional_training_example",
+  "references": [
+    {
+      "reference_id": "sample-image-01",
+      "media_type": "IMAGE",
+      "source_type": "authored_description",
+      "source_url": null,
+      "observed_at": null,
+      "description": "위쪽에는 제품을 고르기 어려운 상황을 질문으로 쓰고, 중앙에는 하나의 제품을 크게 배치한다. 아래에는 제품명과 자세히 보기 버튼을 둔다.",
+      "copy": "루틴에 더할 세럼, 무엇부터 볼까요?",
+      "actual_media_available": false
+    },
+    {
+      "reference_id": "sample-video-01",
+      "media_type": "VIDEO",
+      "source_type": "authored_storyboard",
+      "source_url": null,
+      "observed_at": null,
+      "scenes": [
+        {"scene_id": "A", "role": "hook", "description": "인물이 제품을 고르는 상황을 질문한다."},
+        {"scene_id": "B", "role": "product_intro", "description": "용기를 손에 들고 형태와 제품명을 보여준다."},
+        {"scene_id": "C", "role": "demonstration", "description": "손등에 소량을 덜어 제형을 보여준다. 효능 변화는 연출하지 않는다."},
+        {"scene_id": "D", "role": "cta", "description": "제품을 화면 중앙에 두고 상세 정보를 확인하도록 안내한다."}
+      ],
+      "actual_media_available": false
+    }
+  ],
+  "note": "실제 광고를 수집한 결과가 아닌 실습용 가상 장면 설명입니다."
+}

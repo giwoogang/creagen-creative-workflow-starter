@@ -1,0 +1,13 @@
+{
+  "data_kind": "fictional_training_example",
+  "brand_name": "샘플 브랜드 A",
+  "product_name": "데일리 보습 세럼",
+  "target_audience": "스킨케어 루틴에 넣을 세럼의 정보를 비교하는 사람",
+  "product_facts": ["용량 30mL", "스포이트 용기", "기초 스킨케어용 세럼"],
+  "claims_with_evidence": [],
+  "tone": "담백한 제품 소개",
+  "visual_direction": "밝은 배경과 제품이 잘 보이는 구도",
+  "cta": "제품 자세히 보기",
+  "avoid": ["임상 수치", "시술 대체", "확인되지 않은 효능", "가짜 고객 후기"],
+  "note": "실습을 위해 만든 가상 설정입니다. 실제 제품 정보가 아닙니다."
+}

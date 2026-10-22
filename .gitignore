@@ -1,0 +1,44 @@
+# Personal material and run outputs
+/work/
+/outputs/
+/private/
+
+# Credentials and local connections
+.env
+.env.*
+!.env.example
+.mcp.json
+.mcp.local.json
+.claude/settings.local.json
+.codex/config.toml
+*.pem
+*.key
+*.env
+.envrc
+.npmrc
+.netrc
+credentials*.json
+service-account*.json
+client_secret*.json
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+mcp.json
+.cursor/
+.codex/auth.json
+CLAUDE.local.md
+AGENTS.override.md
+
+# Local environment
+.DS_Store
+._*
+Thumbs.db
+.vscode/
+.idea/
+*.sqlite
+node_modules/
+.venv/
+__pycache__/
+*.log
+.vercel/

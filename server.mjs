@@ -8,9 +8,12 @@ import { videoOptionsInput, videoType, buildVideoPackage, streamLocalMedia, MAX_
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = process.env.CREATIVE_LAB_DATA_DIR || path.join(root, 'work/web-app');
-const port = Number(process.env.CREATIVE_LAB_PORT || 4381);
-const origin = `http://127.0.0.1:${port}`;
-const allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
+const fixedPort = process.env.CREATIVE_LAB_PORT;
+let port, origin, allowedHosts;
+function usePort(value) {
+  port = value; origin = `http://127.0.0.1:${port}`; allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
+}
+usePort(Number(fixedPort || 4381));
 const statePath = path.join(dataDir, 'state.json');
 await mkdir(path.join(dataDir, 'assets'), { recursive: true });
 await mkdir(path.join(dataDir, 'requests'), { recursive: true });
@@ -362,4 +365,17 @@ const server = http.createServer(async (req, res) => {
     if (!error.status) console.error(error.message);
   }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Creative Lab: ${origin}\n에셋 저장: ${dataDir}\n현재는 입력과 제작 요청 준비용 시안입니다. AI 생성은 연결 전입니다.`));
+// Another copy of the app often still holds the default port. Move to the next free one unless a port was set explicitly.
+function listen(value, triesLeft) {
+  usePort(value);
+  const onListening = () => { server.off('error', onError); console.log(`Creative Lab: ${origin}\n에셋 저장: ${dataDir}\n현재는 입력과 제작 요청 준비용 시안입니다. AI 생성은 연결 전입니다.`); };
+  const onError = (error) => {
+    server.off('listening', onListening);
+    if (error.code === 'EADDRINUSE' && !fixedPort && triesLeft > 0) { console.log(`${value}번 포트를 다른 프로그램이 쓰고 있어 ${value + 1}번으로 엽니다.`); return listen(value + 1, triesLeft - 1); }
+    throw error;
+  };
+  server.once('error', onError);
+  server.once('listening', onListening);
+  server.listen(value, '127.0.0.1');
+}
+listen(port, 9);

@@ -148,6 +148,7 @@ async function load() {
     if (!initialized && !localEdits) { if (restored) applyDraft(restored); else fields.forEach((key) => { $(key).value = state.brand[key] || ''; }); }
     selected = new Set([...selected].filter((id) => state.assets.some((asset) => asset.id === id))); selectedReferenceIds = new Set([...selectedReferenceIds].filter((id) => state.references.some((reference) => reference.id === id)));
     if (!state.requests.some((request) => request.id === activeRequest)) activeRequest = [...state.requests].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]?.id || null;
+    if (parentRequestId && !state.requests.some((request) => request.id === parentRequestId)) { parentRequestId = null; parentFeedbackText = null; }
     initialized = true; $('brand-status').textContent = restored ? '초안 복원됨' : state.brand.brandName ? '저장됨' : '입력 전';
     renderAssets(); renderSelection(); $('request-count').textContent = state.requests.length; $('workspace').hidden = false; changeView(currentView, false);
   } catch (error) { $('connection-message').textContent = '작업실을 불러오지 못했습니다. 입력한 내용은 유지됩니다. ' + error.message; $('connection-error').hidden = false; }
@@ -185,7 +186,7 @@ function emptyRequest(target) {
 }
 async function copyRequest(request, fallback) {
   const text = request.handoff || request.promptPreview || request.brief || '';
-  try { await navigator.clipboard.writeText(text); notify('저장된 요청문을 복사했습니다. Codex 또는 Claude Code에 붙여 넣으세요.'); }
+  try { await navigator.clipboard.writeText(text); notify('저장된 요청문을 복사했습니다. Claude 대화창에 붙여 넣으세요.'); }
   catch { fallback.open = true; const textarea = fallback.querySelector('textarea'); textarea.focus(); textarea.select(); notify('요청문을 선택했습니다. 복사 단축키를 눌러 주세요.'); }
 }
 function technicalDetails(request) {
@@ -428,7 +429,7 @@ $('request-form').addEventListener('submit', async (event) => {
   if (!$('brief').value.trim()) { fail('만들 내용을 입력하세요.'); $('brief').focus(); return; }
   const submit = $('prepare-request'); submit.disabled = true; submit.textContent = '요청 저장 중';
   const snapshot = { brand: brandInput(), kind: chosenKind(), brief: $('brief').value.trim(), assetIds: chosenAssets().map((asset) => asset.id), referenceIds: chosenReferences().map((reference) => reference.id), preset, ...(chosenKind() === 'video' ? { videoOptions: videoOptionsInput() } : {}), ...(parentRequestId ? { parentRequestId, ...(typeof parentFeedbackText === 'string' ? { parentFeedbackText } : {}) } : {}) };
-  try { const request = await api('/api/requests', 'POST', snapshot); replaceRequest(request); state.brand = request.brand || snapshot.brand; activeRequest = request.id; $('request-count').textContent = state.requests.length; persistDraft(); changeView('ai'); notify('요청을 저장했습니다. 복사해서 AI 작업을 이어 가세요.'); }
+  try { const request = await api('/api/requests', 'POST', snapshot); replaceRequest(request); state.brand = request.brand || snapshot.brand; activeRequest = request.id; parentRequestId = null; parentFeedbackText = null; $('request-count').textContent = state.requests.length; persistDraft(); changeView('ai'); notify('요청을 저장했습니다. 복사해서 AI 작업을 이어 가세요.'); }
   catch (error) { fail(error.message); } finally { submit.disabled = false; submit.textContent = '요청 저장하고 AI 작업으로'; }
 });
 $('retry-load').addEventListener('click', load); window.addEventListener('pagehide', persistDraft); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { persistDraft(); stopSearchPolling(); } else if (currentView === 'reference') scheduleSearchPolling(0); });
